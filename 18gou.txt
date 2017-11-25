@@ -38,6 +38,20 @@
 　　　ここに紹介するコマンド以外にもありますが、正直言って意味のないコマンドばかりなので  
 　　　割愛します。使いたい方はextra/test_cmd.cppを見てください。  
   
+　　　以下に出てくるfeaturesオプションとは、評価値のどの部分に対して操作するのかを指定する  
+　　　オプションです。  
+  
+　　　-1 : KK、KKP、KPP全てに対して操作（ディフォルト）  
+　　　 0 : KKの非手番側に対して操作  
+　　　 1 : KKの手番側に対して操作  
+　　　 2 : KKPの非手番側に対して操作  
+　　　 3 : KKPの手番側に対して操作  
+　　　 4 : KPPの非手番側に対して操作  
+　　　 5 : KPPの手番側に対して操作  
+　　　 6 : KKに対して操作  
+　　　 7 : KKPに対して操作  
+　　　 8 : KPPに対して操作  
+  
   
 　　　evalmerge bl2オプション  
   
@@ -115,6 +129,29 @@
 　　　　　test evalmerge dir1 dir2 dir3 80 rngrep -500 500 8  
   
   
+　　　evalmerge addオプション  
+  
+　　　　指定した％分、dir2の評価値を上乗せします。  
+　　　　featuresオプションも指定できます。  
+　　　　このオプションは、複数の評価関数を指定した割合でブレンドしたい場合に使用します。  
+  
+　　　　使用例  
+  
+　　　　　workdir1,2  : ブレンド用ワークディレクトリ  
+　　　　　apery_sdt5  : Apery_sdt5のKPPT版の評価関数  
+　　　　　tanuki-sdt5 : ぽんぽこの評価関数  
+　　　　　Qhapaq-sdt5 : Qhapaqの評価関数  
+  
+　　　　　上記のように評価関数が格納されているとして、Apery60%、ぽんぽこ20%、Qhapaq10%の割合で  
+　　　　　ブレンドした評価関数を作りたい場合、以下のように指定します。  
+  
+　　　　　test evalmerge apery_sdt5 apery_sdt5 workdir1 60 eq -20000 20000  
+　　　　　test evalmerge workdir1 tanuki-sdt5 workdir2 20 add  
+　　　　　test evalmerge workdir2 Qhapaq-sdt5 workdir1 10 add  
+  
+　　　　　これでworkdir1に求めるブレンド評価関数が出来上がります。  
+   
+    
 　　　evalexam2  
   
 　　　　evaldirで指定されたパスの評価関数ファイルについて、評価値範囲毎に含まれる局面数の分布を  
@@ -194,3 +231,26 @@ FeatureType    : KPP
  6000 -   7999 :       1148  
  8000 -   9999 :        148  
 10000 -        :         12  
+  
+※KPPT版の場合は、","の左側が非手番側の評価値、右側が手番側の評価値になります。  
+  
+  
+オマケ  
+  
+キメラコマンドとfeaturesオプションをうまく指定すると、手番側の評価をA評価関数で行い、非手番側の  
+評価をB評価関数で行うという、１つのエンジンで２つの評価関数による二人三脚を行う評価を行えるように  
+できます。  
+ちょうどマジンガーＺに出てくる「あしゅら男爵」が作れるのですｗ  
+  
+例えば、手番側は自分の評価関数、非手番側はライバルの評価関数にすると、探索時にライバルの思考を  
+取り入れながら評価するので、ライバルよりPonderがヒットしやすくなり、けっこう強くなります。  
+これはKPPT型評価関数だからできることで、KPP_KKPT型ではなかなか難しいことです。  
+  
+例：  
+  
+　test evalmerge dir1  dir2 work1 0 feature 0  
+　test evalmerge work1 dir2 work2 0 feature 2  
+　test evalmerge work2 dir2 work1 0 feature 4  
+  
+　上記のコマンドを実行すると、手番側ではdir1の評価値、非手番側ではdir2の評価値を使う評価関数に  
+　なります。  
