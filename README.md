@@ -5,18 +5,18 @@
   
 　探索エンジン用  
   
-　　18gou-tournament.exe		AVX2用のバイナリ  
+　　18gou-tournament.exe	AVX2用のバイナリ  
 　　18gou-tounament-sse42.exe	SSE4.2用のバイナリ  
   
 　　Msys2/clangでビルドした、トーナメント用のバイナリです。VSでビルドしたものより数%ぐらいは  
 　　高速に動作します。  
-　　ご自分の環境に合わせたバイナリを、18.exeにリネームしてご利用ください。  
+　　ご自分の環境に合わせたバイナリを、18gou.exeにリネームしてご利用ください。  
   
   
 　学習、評価値分析/操作用  
   
-　　18gou-learn.exe			AVX2用バイナリ  
-　　18gou-learn-sse42.exe		SSE4.2用バイナリ  
+　　18gou-learn.exe		AVX2用バイナリ  
+　　18gou-learn-sse42.exe	SSE4.2用バイナリ  
   
 　　Msys2/g++でビルドした、学習、評価値分析/操作用バイナリです。  
 　　Msys2/clangでビルドしたものを提供したかったのですが、諸事情でOpenMPの利用にDLLが必要になって  
@@ -31,6 +31,12 @@
   
   KPPT版の学習、評価値分析/操作用バイナリを公開しました。  
   KPPTフォルダ内のバイナリは、評価関数にKPPTを使うことに特化して作成されています。  
+  
+  
+2018/1/2  
+  
+  KPP_synthesized.binのみで動作する、ダイエット18号を公開しました。  
+  Dietフォルダ内のバイナリは、tournamentモード用のみです。learn版は意味ないので。  
   
   
 学習部、評価値分析/操作の説明は、「18gou.txt」を参照願います。  
