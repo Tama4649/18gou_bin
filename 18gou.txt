@@ -43,11 +43,11 @@
   
 　　　-1 : KK、KKP、KPP全てに対して操作（ディフォルト）  
 　　　 0 : KKの非手番側に対して操作  
-　　　 1 : KKの手番側に対して操作  
+　　　 1 : KKの共通側に対して操作  
 　　　 2 : KKPの非手番側に対して操作  
-　　　 3 : KKPの手番側に対して操作  
+　　　 3 : KKPの共通側に対して操作  
 　　　 4 : KPPの非手番側に対して操作  
-　　　 5 : KPPの手番側に対して操作  
+　　　 5 : KPPの共通側に対して操作  
 　　　 6 : KKに対して操作  
 　　　 7 : KKPに対して操作  
 　　　 8 : KPPに対して操作  
@@ -142,10 +142,10 @@
 　　　　　tanuki-sdt5 : ぽんぽこの評価関数  
 　　　　　Qhapaq-sdt5 : Qhapaqの評価関数  
   
-　　　　　上記のように評価関数が格納されているとして、Apery60%、ぽんぽこ20%、Qhapaq10%の割合で  
+　　　　　上記のように評価関数が格納されているとして、Apery70%、ぽんぽこ20%、Qhapaq10%の割合で  
 　　　　　ブレンドした評価関数を作りたい場合、以下のように指定します。  
   
-　　　　　test evalmerge apery_sdt5 apery_sdt5 workdir1 60 eq -20000 20000  
+　　　　　test evalmerge apery_sdt5 apery_sdt5 workdir1 70 eq -20000 20000  
 　　　　　test evalmerge workdir1 tanuki-sdt5 workdir2 20 add  
 　　　　　test evalmerge workdir2 Qhapaq-sdt5 workdir1 10 add  
   
@@ -168,8 +168,8 @@
   
 FeatureType    : KK  
   
-評価値範囲　　　　局面数　手番ボーナスの局面数  
-　　　↓　　　　　　↓　　　　　　↓  
+評価値範囲　　　共通の局面数　手番ボーナスの局面数  
+　　　↓　　　　　　↓　　　　　↓  
       - -10000 :          0 ,          0  
 -9999 -  -8000 :          0 ,          0  
 -7999 -  -6000 :          6 ,          0  
@@ -232,8 +232,6 @@ FeatureType    : KPP
  8000 -   9999 :        148  
 10000 -        :         12  
   
-※KPPT版の場合は、","の左側が非手番側の評価値、右側が手番側の評価値になります。  
-  
   
 オマケ  
   
@@ -254,3 +252,32 @@ FeatureType    : KPP
   
 　上記のコマンドを実行すると、手番側ではdir1の評価値、非手番側ではdir2の評価値を使う評価関数に  
 　なります。  
+  
+  
+2018/1/6　オマケ追記  
+  
+evalconvertコマンドの使い方の説明についての要望があるようなのですが、これは18号のコマンドではなく、  
+やねうら王に元々備わっているコマンドなので説明は控えさせていただいていたのですが、ソースを読み解く  
+必要がある部分もありますので、コマンドの書式だけ説明します。  
+  
+書式：  test evalconvert intype indir outtype outdir  
+  
+  intype, outtype  
+    評価関数タイプの指定。以下の値が指定できる。（代表的なもののみ記載）  
+    indirにintypeに指定したタイプと違うファイルが入っていたらエラーになるので注意。  
+    
+    kppt16　…………　AperyのKPPT型評価関数（16ビット構成）  
+    kppt32　…………　やねうら王2017のKPPT型評価関数（32ビット構成）  
+    kpp_kkpt32　……　やねうら王2017のKPP_KKPT型評価関数（32ビット構成）  
+  
+  indir, outdir  
+    変換前、後の評価関数ファイル格納場所  
+  
+例：  
+  
+dir1に格納されたKPP_KKPT型評価関数をKPPT型に変換してdir2に格納する  
+  
+  skiploadingeval true  
+  test evalconvert kpp_kkpt32 dir1 kppt32 dir2  
+
+    
