@@ -42,12 +42,12 @@
 　　　オプションです。  
   
 　　　-1 : KK、KKP、KPP全てに対して操作（ディフォルト）  
-　　　 0 : KKの非手番側に対して操作  
-　　　 1 : KKの共通側に対して操作  
-　　　 2 : KKPの非手番側に対して操作  
-　　　 3 : KKPの共通側に対して操作  
-　　　 4 : KPPの非手番側に対して操作  
-　　　 5 : KPPの共通側に対して操作  
+　　　 0 : KKの手番共通側に対して操作  
+　　　 1 : KKの手番側に対して操作  
+　　　 2 : KKPの手番共通側に対して操作  
+　　　 3 : KKPの手番側に対して操作  
+　　　 4 : KPPの手番共通側に対して操作  
+　　　 5 : KPPの手番側に対して操作  
 　　　 6 : KKに対して操作  
 　　　 7 : KKPに対して操作  
 　　　 8 : KPPに対して操作  
@@ -64,7 +64,7 @@
 　　　　　dir1の評価関数とdir2の評価関数を6:4の割合でブレンドし、dir1の評価値が0だったら  
 　　　　　dir2の評価値とし、KPPだけに適用したものをdir3に出力する。  
   
-　　　　　test evalmerge dir1 dir2 dir3 60 bl2 features 8  
+　　　　　test evalmerge dir1 dir2 dir3 60 bl2 feature 8  
   
   
 　　　evalmerge padオプション  
@@ -76,7 +76,7 @@
   
 　　　　　dir1の評価値が0ならdir2の評価値で埋め、KKPだけに適用したものをdir3に出力する。  
   
-　　　　　test evalmerge dir1 dir2 dir3 0 pad 7  
+　　　　　test evalmerge dir1 dir2 dir3 0 pad feature 7  
   
   
 　　　evalmerge noiseオプション  
@@ -102,7 +102,7 @@
   
 　　　　　dir1のKKの評価値が-5000以下の値を80%にしたものをdir3に出力する。  
   
-　　　　　test evalmerge dir1 dir1 dir3 80 eq -20000 -5000 6  
+　　　　　test evalmerge dir1 dir1 dir3 80 eq -20000 -5000 feature 6  
   
   
 　　　evalmerge rngblオプション  
@@ -114,7 +114,7 @@
   
 　　　　　dir1のKPPの評価値が-500～500の時に、dir2の評価値と8:2でブレンドしたものをdir3に出力する。  
   
-　　　　　test evalmerge dir1 dir2 dir3 80 rngbl -500 500 8  
+　　　　　test evalmerge dir1 dir2 dir3 80 rngbl -500 500 feature 8  
   
   
 　　　evalmerge rngrepオプション  
@@ -126,7 +126,7 @@
   
 　　　　　dir1のKPPの評価値が-500～500の時に、dir2の評価値に置き換えたものをdir3に出力する。  
   
-　　　　　test evalmerge dir1 dir2 dir3 80 rngrep -500 500 8  
+　　　　　test evalmerge dir1 dir2 dir3 80 rngrep -500 500 feature 8  
   
   
 　　　evalmerge addオプション  
@@ -279,5 +279,99 @@ dir1に格納されたKPP_KKPT型評価関数をKPPT型に変換してdir2に格
   
   skiploadingeval true  
   test evalconvert kpp_kkpt32 dir1 kppt32 dir2  
+  
+  
+2018/4/29追記  
+  
+  新コマンドの操作説明  
+  
+  testコマンドに追加したオプションを説明します。  
+  コマンドの意味についてはあえて説明はしません。そういうのは機械学習とか深層学習とかの参考書を  
+  読んでいただければと思います。^^;  
+  
+  
+  evaleqコマンド  
+  
+　　指定した範囲内の評価値を、指定した％分増減します。featuresオプションも指定できますが、形式が今までと  
+　　異なります。  
+  
+　　　ALL 　　KK、KKP、KPP全てに適用（ディフォルト）  
+　　　KK　　　KKのみに適用  
+　　　KKP 　　KKPのみに適用  
+　　　KPP 　　KPPのみに適用  
+　　　KKPP　　KKPとKPPに適用（KKを除外）  
+  
+　　使用例  
+  
+　　　dir1のKKPとKPPについて、評価値の共通側の値が-200～200の範囲を90%に下げたものを、dir2に出力する。  
+  
+　　　test evaleq dir1 dir2 -200 200 90 KKPP  
+  
+　　以前にevalmerge eqオプションを作りましたが、evalmerge eqオプションとの違いは、  
+  
+　　　「共通側の評価値を基準として、共通側、手番側とも同時に増減する」  
+  
+　　ということです。  
+  
+　　例えば、以下のような評価値があったとします。(評価関数はdir1に格納されているものとします）  
+  
+　　　　　　　　共通側　　　　手番側  
+　　　特徴A　　　100　　　　　　 20  
+　　　特徴B　　　200　　　　　　100  
+  
+　　これをそれぞれ、以下のコマンドを実行した結果を示します。  
+  
+　　　test evalmerge dir1 dir1 dir2 90 eq 100 200  
+  
+　　　実行後  
+  
+　　　　　　　　共通側　　　　手番側  
+　　　特徴A　　　 90　　　　　　20  
+　　　特徴B　　　180　　　　　　90  
+  
+　　　test evaleq dir1 dir2 100 200 90  
+  
+　　　実行後  
+  
+　　　　　　　　共通側　　　　手番側  
+　　　特徴A　　　 90　　　　　　18  
+　　　特徴B　　　180　　　　　　90  
 
-    
+　　test evalmerge eqの場合、共通側、手番側それぞれ独立に調整されていたため、手番の時と非手番の時の評価が  
+　　チグハグになってしまうことがありました。  
+　　evaleqでは３駒関係をセットと増減するため、そのようなチグハグが起こらないようになっています。  
+  
+  
+  evalreg、evalreg2コマンド  
+  
+　　evaleqコマンドをさらに発展させ、指定した範囲「以外」の評価値を、指定したシグモイド関数の曲線で減少させます。 
+　　featuresオプションの指定はevaleqコマンドと同様です。  
+  
+　　書式  
+  
+　　　test [evalreg | evalreg2] 変更前評価関数ディレクトリ 変更後評価関数ディレクトリ 下限% [Ponanza定数] [features]  
+　　　※Ponanza定数のディフォルトは600  
+  
+　　シグモイド関数は、以下の２つを用意しています。  
+  
+　　　evalreg  
+　　　　exp((-abs(評価値) + 範囲) / Ponanza定数) * 下限% + 1 - 下限%  
+　　　　※下限%は、パーセントを100で割ったもの  
+  
+　　　evalreg2  
+　　　　-(exp((-abs(評価値) + 範囲) / Ponanza定数) * 下限%) + 1
+　　　　※下限%は、パーセントを100で割ったもの  
+  
+　　　この関数の曲線グラフは、このフォルダにある画像を参照ください。  
+  
+　　使用例  
+  
+　　　dir1のKKPとKPPについて、評価値の共通側の値が-200～200の範囲以外を、下限値90%に設定した曲線で減少させた  
+　　　ものを、dir2に出力する。曲線に使用するPonanza定数は600とする。  
+  
+　　　test evalreg dir1 dir2 200 90 600 KKPP  
+　　
+　　これは機械学習でいうところのL2正則化を行うことを目的としています。  
+　　過学習になってしまった評価関数は全く使い物にならないため、捨ててしまっていたこともあるかと思いますが、  
+　　このコマンドを適用して過学習部分を押し下げ、救済することができるようになっています。  
+  
