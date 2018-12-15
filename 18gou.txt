@@ -349,7 +349,8 @@ dir1に格納されたKPP_KKPT型評価関数をKPPT型に変換してdir2に格
   
 　　書式  
   
-　　　test [evalreg | evalreg2] 変更前評価関数ディレクトリ 変更後評価関数ディレクトリ 下限% [Ponanza定数] [features]  
+　　　test [evalreg | evalreg2] 変更前評価関数ディレクトリ 変更後評価関数ディレクトリ 適用外範囲 下限% 
+　　　　　　[Ponanza定数] [features]  
 　　　※Ponanza定数のディフォルトは600  
   
 　　シグモイド関数は、以下の２つを用意しています。  
