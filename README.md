@@ -58,3 +58,15 @@
 　入っています。使い方はやねうら王の使い方と同じですので割愛します。  
   
 学習部、評価値分析/操作の説明は、「18gou.txt」を参照願います。  
+  
+
+2020/11/6  
+  やねうら王V5.2ベースの標準NNUE対応のWindowsバイナリを配布します。  
+  NNUEフォルダ配下に以下のバイナリを用意しましたので、お使いの環境に合わせてご利用ください。  
+
+  JKishi18gou_AVX2.exe  
+  JKishi18gou_AVX512.exe  
+  JKishi18gou_SSE42.exe  
+  JKishi18gou_ZEN1.exe  
+  JKishi18gou_ZEN2.exe  
+
