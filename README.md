@@ -69,4 +69,5 @@
   JKishi18gou_SSE42.exe  
   JKishi18gou_ZEN1.exe  
   JKishi18gou_ZEN2.exe  
-
+  
+  以降、やねうら王のコミットに合わせてチョイチョイ更新していきます。  
