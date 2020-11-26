@@ -65,9 +65,18 @@
   NNUEフォルダ配下に以下のバイナリを用意しましたので、お使いの環境に合わせてご利用ください。  
 
   JKishi18gou_AVX2.exe  
+  JKishi18gou_AVX512VNNI.exe  
   JKishi18gou_AVX512.exe  
   JKishi18gou_SSE42.exe  
   JKishi18gou_ZEN1.exe  
   JKishi18gou_ZEN2.exe  
   
   以降、やねうら王のコミットに合わせてチョイチョイ更新していきます。  
+  
+  
+2020/11/24  
+  yunyun0419さんのlブランチを取り込んだバージョンを作成してみたので、実験したい方はどうぞ。  
+  
+  JKishi18gou_l.zip  
+  
+  正直、対局時に大きく変わることはなかったです。。。^^;  
